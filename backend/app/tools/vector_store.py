@@ -1,6 +1,6 @@
 import os
 from langchain_chroma import Chroma
-from langchain.docstore.document import Document
+from langchain_core.documents import Document  # <--- FIXED IMPORT
 from backend.app.config import embeddings
 
 # Persist data locally so we don't lose it

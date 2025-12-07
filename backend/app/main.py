@@ -5,19 +5,20 @@ from backend.app.graph.state import AgentState
 from backend.app.tools.vector_store import initialize_vector_db
 from backend.app.agents.scheduling import scheduling_agent
 from backend.app.agents.insights import insights_agent
+import uvicorn
 
 app = FastAPI(title="Automotive Agentic Ecosystem")
 
-# CORS Setup
+# CORS Setup for Frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Allow all for demo purposes
+    allow_origins=["*"], # In production, replace with specific frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# In-memory session store (Replace with Redis for production)
+# In-memory session store (Use Redis for production)
 SESSION_STORE = {}
 
 @app.on_event("startup")
@@ -47,11 +48,16 @@ async def start_workflow(vehicle_id: str):
     # Save state
     SESSION_STORE[vehicle_id] = result
     
+    # Get initial message
+    msg = "Connecting..."
+    if result.get("chat_history") and len(result["chat_history"]) > 0:
+        msg = result["chat_history"][-1]["content"]
+
     return {
         "vehicle_id": vehicle_id,
-        "alert": result.get("data_analysis_alert"),
-        "diagnosis": result.get("diagnosis_result"),
-        "chat_history": result.get("chat_history", [])
+        "initial_message": msg,
+        "chat_history": result.get("chat_history", []),
+        "diagnosis": result.get("diagnosis_result")
     }
 
 @app.post("/chat/message")
@@ -67,7 +73,6 @@ async def chat_message(vehicle_id: str, message: str):
     
     if "yes" in message.lower():
         # Resume Workflow: Manually run Scheduling -> Insights
-        # (In full LangGraph, we would use checkpointers to resume)
         state = scheduling_agent(state)
         state = insights_agent(state)
         
@@ -82,5 +87,4 @@ async def chat_message(vehicle_id: str, message: str):
         return {"response": "No problem. I'll snooze this alert."}
 
 if __name__ == "__main__":
-    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

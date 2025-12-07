@@ -25,8 +25,6 @@ def diagnosis_agent(state: AgentState):
 
     data = state['telemetry_data']
     
-    # In a real scenario, an ML model would predict this. 
-    # Here we map codes to components.
     if "P0301" in data['dtc_codes']:
         state['diagnosis_result'] = DiagnosisResult(
             fault_code="P0301",

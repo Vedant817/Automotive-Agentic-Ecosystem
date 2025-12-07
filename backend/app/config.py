@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_huggingface import HuggingFaceEmbeddings
+
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -13,8 +15,6 @@ llm = ChatGoogleGenerativeAI(
     google_api_key=GOOGLE_API_KEY,
     temperature=0.7
 )
-
-embeddings = GoogleGenerativeAIEmbeddings(
-    model="models/embedding-001",
-    google_api_key=GOOGLE_API_KEY
+embeddings = HuggingFaceEmbeddings(
+    model_name="all-MiniLM-L6-v2"
 )

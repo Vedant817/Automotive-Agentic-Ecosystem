@@ -22,8 +22,8 @@ workflow.set_entry_point("data_analysis")
 workflow.add_edge("data_analysis", "diagnosis")
 workflow.add_edge("diagnosis", "engagement")
 
-# Conditional Logic for Demo API
-# We stop at engagement to wait for user input (handled in endpoints.py logic)
+# Conditional Logic for Demo API:
+# We stop at engagement to wait for user input (handled in main.py)
 workflow.add_edge("engagement", END) 
 
 # Sub-graph for post-approval

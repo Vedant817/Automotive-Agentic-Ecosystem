@@ -4,6 +4,9 @@ python-dotenv
 langgraph
 langchain
 langchain-google-genai
+langchain-chroma
 chromadb
 pydantic
 requests
+langchain-huggingface
+sentence-transformers
