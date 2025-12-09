@@ -1,7 +1,7 @@
 import os
 from langchain_chroma import Chroma
 from langchain_core.documents import Document  # <--- FIXED IMPORT
-from backend.app.config import embeddings
+from app.config import embeddings
 
 # Persist data locally so we don't lose it
 PERSIST_DIRECTORY = "./data/vector_store"

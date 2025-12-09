@@ -10,13 +10,28 @@ export default function TelemetryPanel() {
   const metrics = [
     {
       label: "Temperature",
-      value: "98°C",
+      value: telemetryData ? `${telemetryData.engine_temp_c}°C` : "N/A",
       icon: Thermometer,
       color: "text-red-400",
     },
-    { label: "RPM", value: "3200", icon: Gauge, color: "text-blue-400" },
-    { label: "Speed", value: "85 km/h", icon: Activity, color: "text-green-400" },
-    { label: "Battery", value: "12.8V", icon: Zap, color: "text-yellow-400" },
+    { 
+      label: "RPM", 
+      value: telemetryData ? `${telemetryData.rpm}` : "N/A", 
+      icon: Gauge, 
+      color: "text-blue-400" 
+    },
+    { 
+      label: "Speed", 
+      value: telemetryData ? `${telemetryData.speed_kmh} km/h` : "N/A", 
+      icon: Activity, 
+      color: "text-green-400" 
+    },
+    { 
+      label: "Battery", 
+      value: telemetryData ? `${telemetryData.battery_voltage}V` : "N/A", 
+      icon: Zap, 
+      color: "text-yellow-400" 
+    },
   ];
 
   return (

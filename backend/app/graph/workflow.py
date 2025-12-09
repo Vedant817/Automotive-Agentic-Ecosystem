@@ -1,10 +1,10 @@
 from langgraph.graph import StateGraph, END
-from backend.app.graph.state import AgentState
+from app.graph.state import AgentState
 
-from backend.app.agents.diagnosis import data_analysis_agent, diagnosis_agent
-from backend.app.agents.engagement import customer_engagement_agent
-from backend.app.agents.scheduling import scheduling_agent
-from backend.app.agents.insights import insights_agent
+from app.agents.diagnosis import data_analysis_agent, diagnosis_agent
+from app.agents.engagement import customer_engagement_agent
+from app.agents.scheduling import scheduling_agent
+from app.agents.insights import insights_agent
 
 workflow = StateGraph(AgentState)
 

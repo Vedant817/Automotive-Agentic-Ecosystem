@@ -43,7 +43,7 @@ export default function InsightsPanel() {
     },
   ];
 
-  const displayInsights = insights.length > 0 ? insights : mockInsights;
+  const displayInsights = insights?.length > 0 ? insights : mockInsights;
 
   const getIcon = (severity: string) => {
     switch (severity) {

@@ -110,7 +110,7 @@ export default function AppointmentsPanel() {
 
       {/* Appointments List */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {appointments.length === 0 ? (
+        {!appointments || appointments.length === 0 ? (
           <div className="col-span-full rounded-lg border border-slate-800 bg-slate-900 p-12 text-center">
             <Calendar className="mx-auto h-12 w-12 text-slate-600" />
             <p className="mt-4 text-slate-400">No appointments scheduled</p>

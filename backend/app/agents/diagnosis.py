@@ -1,6 +1,6 @@
-from backend.app.graph.state import AgentState
-from backend.app.tools.mock_services import get_vehicle_data
-from backend.app.models.alerts import DiagnosisResult
+from app.graph.state import AgentState
+from app.tools.mock_services import get_vehicle_data
+from app.models.alerts import DiagnosisResult
 
 def data_analysis_agent(state: AgentState):
     """Fetches data and flags anomalies."""

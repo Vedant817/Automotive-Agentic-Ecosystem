@@ -8,7 +8,8 @@ import TelemetryChart from "../ui/TelemetryChart";
 export default function DashboardPanel() {
   const vehicles = useStore((state) => state.vehicles);
   const selectedVehicle = useStore((state) => state.selectedVehicle);
-  const insights = useStore((state) => state.insights);
+  const telemetryData = useStore((state) => state.telemetryData);
+  const diagnosis = useStore((state) => state.diagnosis);
 
   const healthyCount = vehicles.filter((v) => v.status === "healthy").length;
   const warningCount = vehicles.filter((v) => v.status === "warning").length;
@@ -59,45 +60,79 @@ export default function DashboardPanel() {
           <TelemetryChart />
         </div>
 
-        {/* Recent Insights */}
+        {/* Diagnosis Info */}
         <div className="rounded-lg border border-slate-800 bg-slate-900 p-6">
           <div className="mb-4 flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-blue-500" />
-            <h2 className="text-lg font-semibold text-white">Recent Insights</h2>
+            <h2 className="text-lg font-semibold text-white">Diagnosis</h2>
           </div>
-          <div className="space-y-3">
-            {insights.slice(0, 5).map((insight) => (
-              <div
-                key={insight.id}
-                className="rounded-lg border border-slate-700 bg-slate-800 p-3"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <h3 className="font-medium text-white">{insight.title}</h3>
-                    <p className="mt-1 text-sm text-slate-400">
-                      {insight.description}
-                    </p>
-                  </div>
-                  <span
-                    className={`ml-2 inline-block rounded px-2 py-1 text-xs font-medium ${
-                      insight.severity === "critical"
-                        ? "bg-red-900 text-red-200"
-                        : insight.severity === "warning"
-                          ? "bg-yellow-900 text-yellow-200"
-                          : "bg-blue-900 text-blue-200"
-                    }`}
-                  >
-                    {insight.severity}
-                  </span>
-                </div>
+          {diagnosis ? (
+            <div className="space-y-3">
+              <div className="rounded-lg border border-yellow-800 bg-yellow-900/20 p-3">
+                <p className="text-sm font-medium text-yellow-200">
+                  {diagnosis.fault_description}
+                </p>
+                <p className="mt-2 text-xs text-yellow-100">
+                  Code: {diagnosis.fault_code}
+                </p>
+                <p className="mt-1 text-xs text-yellow-100">
+                  Component: {diagnosis.probable_component}
+                </p>
+                <p className="mt-1 text-xs text-yellow-100">
+                  Urgency: <span className="font-semibold">{diagnosis.urgency}</span>
+                </p>
               </div>
-            ))}
-            {insights.length === 0 && (
-              <p className="text-center text-slate-400">No insights yet</p>
-            )}
-          </div>
+            </div>
+          ) : (
+            <p className="text-center text-slate-400">No diagnosis yet</p>
+          )}
         </div>
       </div>
+
+      {/* Telemetry Data */}
+      {telemetryData && (
+        <div className="rounded-lg border border-slate-800 bg-slate-900 p-6">
+          <h2 className="mb-4 text-lg font-semibold text-white">Telemetry Data</h2>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+            <div className="rounded-lg bg-slate-800 p-3">
+              <p className="text-xs text-slate-400">Engine Temp</p>
+              <p className="mt-1 text-lg font-semibold text-white">
+                {telemetryData.engine_temp_c}°C
+              </p>
+            </div>
+            <div className="rounded-lg bg-slate-800 p-3">
+              <p className="text-xs text-slate-400">RPM</p>
+              <p className="mt-1 text-lg font-semibold text-white">
+                {telemetryData.rpm}
+              </p>
+            </div>
+            <div className="rounded-lg bg-slate-800 p-3">
+              <p className="text-xs text-slate-400">Speed</p>
+              <p className="mt-1 text-lg font-semibold text-white">
+                {telemetryData.speed_kmh} km/h
+              </p>
+            </div>
+            <div className="rounded-lg bg-slate-800 p-3">
+              <p className="text-xs text-slate-400">Fuel Level</p>
+              <p className="mt-1 text-lg font-semibold text-white">
+                {telemetryData.fuel_level_percent}%
+              </p>
+            </div>
+            <div className="rounded-lg bg-slate-800 p-3">
+              <p className="text-xs text-slate-400">Battery</p>
+              <p className="mt-1 text-lg font-semibold text-white">
+                {telemetryData.battery_voltage}V
+              </p>
+            </div>
+            <div className="rounded-lg bg-slate-800 p-3">
+              <p className="text-xs text-slate-400">DTC Codes</p>
+              <p className="mt-1 text-lg font-semibold text-white">
+                {telemetryData.dtc_codes.length}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Selected Vehicle Details */}
       {selectedVehicle && (
